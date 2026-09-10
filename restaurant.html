@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فود آردرینگ | منوی رستوران</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            line-height: 1.9;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px 0;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #f97316;
+        }
+
+        .nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            padding: 8px 14px;
+            border-radius: 999px;
+            background-color: #f1f5f9;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background-color: #f97316;
+            color: #ffffff;
+        }
+
+        .cart-badge {
+            background-color: #f97316;
+            color: #ffffff;
+            border-radius: 999px;
+            padding: 2px 8px;
+            font-size: 12px;
+            margin-right: 6px;
+        }
+
+        .nav a.active .cart-badge {
+            background-color: #ffffff;
+            color: #f97316;
+        }
+
+        .section {
+            padding: 24px 0;
+        }
+
+        .section-title {
+            font-size: 24px;
+            margin: 0 0 16px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 0;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #f97316;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #ea580c;
+        }
+
+        .btn-outline {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
+        }
+
+        .btn-outline:hover {
+            background-color: #f8fafc;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #fff7ed;
+            color: #c2410c;
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .restaurant-header {
+            padding-top: 20px;
+        }
+
+        .restaurant-card {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 18px;
+            align-items: center;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 18px;
+            box-shadow: 0 10px 30px rgba(2, 6, 23, 0.06);
+        }
+
+        .restaurant-emoji {
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+            background: linear-gradient(135deg, #fff7ed, #ffedd5);
+            border-radius: 18px;
+        }
+
+        .restaurant-info h1 {
+            margin: 0 0 10px;
+            font-size: 28px;
+        }
+
+        .badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .menu-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .menu-item {
+            display: grid;
+            grid-template-columns: 90px 1fr auto;
+            gap: 16px;
+            align-items: center;
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 8px 24px rgba(2, 6, 23, 0.05);
+        }
+
+        .menu-emoji {
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+            background-color: #fff7ed;
+            border-radius: 14px;
+        }
+
+        .menu-info h3 {
+            margin: 0 0 4px;
+            font-size: 18px;
+        }
+
+        .menu-info p {
+            margin: 0 0 8px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .price {
+            color: #c2410c;
+            font-weight: 800;
+        }
+
+        .menu-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .cart-summary {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 10px 30px rgba(2, 6, 23, 0.06);
+        }
+
+        .total-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .summary-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .empty {
+            background-color: #ffffff;
+            border: 1px dashed #e2e8f0;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            color: #64748b;
+            margin: 24px 0;
+        }
+
+        .empty a {
+            display: inline-flex;
+            margin-top: 14px;
+        }
+
+        .footer {
+            padding: 22px 0;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+            text-align: center;
+            background-color: #ffffff;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 50%;
+            transform: translateX(50%) translateY(20px);
+            background-color: #0f172a;
+            color: #ffffff;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-weight: 700;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.25s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(50%) translateY(0);
+        }
+
+        @media (max-width: 700px) {
+            .restaurant-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .restaurant-emoji {
+                margin: 0 auto;
+            }
+
+            .badges {
+                justify-content: center;
+            }
+
+            .menu-item {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .menu-emoji {
+                margin: 0 auto;
+            }
+
+            .menu-actions {
+                justify-content: center;
+            }
+
+            .summary-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">🍽️ فود آردرینگ</a>
+
+            <nav class="nav">
+                <a href="index.html">رستوران‌ها</a>
+                <a href="cart.html">سبد خرید <span id="cartCount" class="cart-badge"></span></a>
+                <a href="tracking.html">ردیابی سفارش</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" id="content">
+        <!-- محتوای رستوران با جاوااسکریپت اینجا رندر می‌شود -->
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>سیستم نمونه سفارش غذا | HTML + CSS + JS</p>
+        </div>
+    </footer>
+
+    <script>
+        const restaurants = [
+            {
+                id: 1,
+                name: "رستوران زعفران",
+                category: "فست‌فود",
+                rating: 4.8,
+                time: "20 تا 35 دقیقه",
+                emoji: "🍔",
+                menu: [
+                    {
+                        id: "r1-1",
+                        name: "برگر ویژه",
+                        desc: "گوشت چرخ‌کرده، پنیر چدار، سس مخصوص و سبزیجات تازه",
+                        price: 185000,
+                        emoji: "🍔"
+                    },
+                    {
+                        id: "r1-2",
+                        name: "پیتزا مارگاریتا",
+                        desc: "سس گوجه، پنیر موزارلا و ریحان تازه",
+                        price: 245000,
+                        emoji: "🍕"
+                    },
+                    {
+                        id: "r1-3",
+                        name: "سیب‌زمینی سرخ‌شده",
+                        desc: "سیب‌زمینی طلایی با نمک و ادویه مخصوص",
+                        price: 85000,
+                        emoji: "🍟"
+                    },
+                    {
+                        id: "r1-4",
+                        name: "نوشابه",
+                        desc: "نوشابه گازدار ۳۳۰ میلی‌لیتر",
+                        price: 45000,
+                        emoji: "🥤"
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "کافه و رستوران آفتاب",
+                category: "غذای ایرانی",
+                rating: 4.6,
+                time: "30 تا 45 دقیقه",
+                emoji: "🍛",
+                menu: [
+                    {
+                        id: "r2-1",
+                        name: "چلوکباب",
+                        desc: "کباب زعفرانی با برنج ایرانی و گوجه کبابی",
+                        price: 350000,
+                        emoji: "🍢"
+                    },
+                    {
+                        id: "r2-2",
+                        name: "قورمه‌سبزی",
+                        desc: "خورش سنتی با گوشت و لیمو عمانی",
+                        price: 280000,
+                        emoji: "🍲"
+                    },
+                    {
+                        id: "r2-3",
+                        name: "زرشک‌پلو",
+                        desc: "برنج ایرانی با زرشک، زعفران و کره",
+                        price: 220000,
+                        emoji: "🍚"
+                    },
+                    {
+                        id: "r2-4",
+                        name: "دسر روز",
+                        desc: "دسر فصلی به انتخاب رستوران",
+                        price: 95000,
+                        emoji: "🍰"
+                    }
+                ]
+            },
+            {
+                id: 3,
+                name: "پیتزرای رومی",
+                category: "پیتزا",
+                rating: 4.5,
+                time: "25 تا 40 دقیقه",
+                emoji: "🍕",
+                menu: [
+                    {
+                        id: "r3-1",
+                        name: "پیتزا قارچ",
+                        desc: "پیتزا با قارچ تازه، پنیر و سس مخصوص",
+                        price: 220000,
+                        emoji: "🍕"
+                    },
+                    {
+                        id: "r3-2",
+                        name: "پیتزا جامبون",
+                        desc: "پیتزا با جامبون، قارچ و پنیر",
+                        price: 240000,
+                        emoji: "🍕"
+                    },
+                    {
+                        id: "r3-3",
+                        name: "پیتزا سبزیجات",
+                        desc: "پیتزا با سبزیجات تازه و پنیر",
+                        price: 210000,
+                        emoji: "🥗"
+                    },
+                    {
+                        id: "r3-4",
+                        name: "نوشابه",
+                        desc: "نوشابه گازدار ۳۳۰ میلی‌لیتر",
+                        price: 45000,
+                        emoji: "🥤"
+                    }
+                ]
+            },
+            {
+                id: 4,
+                name: "رستوران سوشی شرق",
+                category: "غذای ژاپنی",
+                rating: 4.7,
+                time: "35 تا 50 دقیقه",
+                emoji: "🍣",
+                menu: [
+                    {
+                        id: "r4-1",
+                        name: "سوشی سالمون",
+                        desc: "سوشی تازه با سالمون و برنج سوشی",
+                        price: 320000,
+                        emoji: "🍣"
+                    },
+                    {
+                        id: "r4-2",
+                        name: "رول تن ماهی",
+                        desc: "رول ژاپنی با تن ماهی و سبزیجات",
+                        price: 360000,
+                        emoji: "🍙"
+                    },
+                    {
+                        id: "r4-3",
+                        name: "رامن",
+                        desc: "سوپ ژاپنی با رشته، مرغ و سبزیجات",
+                        price: 280000,
+                        emoji: "🍜"
+                    },
+                    {
+                        id: "r4-4",
+                        name: "چای ماتشا",
+                        desc: "چای سبز سنتی ژاپن",
+                        price: 120000,
+                        emoji: "🍵"
+                    }
+                ]
+            }
+        ];
+
+        function formatPrice(value) {
+            return new Intl.NumberFormat("fa-IR").format(value) + " تومان";
+        }
+
+        function getCart() {
+            try {
+                return JSON.parse(localStorage.getItem("foodCart") || "[]");
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem("foodCart", JSON.stringify(cart));
+            updateCartCount();
+            updateCartTotal();
+        }
+
+        function getCartCount() {
+            return getCart().reduce((sum, item) => sum + Number(item.qty || 0), 0);
+        }
+
+        function getCartTotal() {
+            return getCart().reduce(
+                (sum, item) => sum + Number(item.price || 0) * Number(item.qty || 0),
+                0
+            );
+        }
+
+        function updateCartCount() {
+            const count = getCartCount();
+            const cartCountElement = document.getElementById("cartCount");
+
+            if (!cartCountElement) return;
+
+            cartCountElement.textContent = count
+                ? `(${count.toLocaleString("fa-IR")})`
+                : "";
+        }
+
+        function updateCartTotal() {
+            const cartTotalElement = document.getElementById("cartTotal");
+
+            if (!cartTotalElement) return;
+
+            cartTotalElement.textContent = formatPrice(getCartTotal());
+        }
+
+        function showToast(message) {
+            let toast = document.getElementById("toast");
+
+            if (!toast) {
+                toast = document.createElement("div");
+                toast.id = "toast";
+                toast.className = "toast";
+                document.body.appendChild(toast);
+            }
+
+            toast.textContent = message;
+            toast.classList.add("show");
+
+            clearTimeout(toast.hideTimer);
+            toast.hideTimer = setTimeout(() => {
+                toast.classList.remove("show");
+            }, 2000);
+        }
+
+        function addToCart(itemId) {
+            const restaurant = restaurants.find(
+                (item) => item.id === Number(new URLSearchParams(window.location.search).get("id"))
+            );
+
+            if (!restaurant) return;
+
+            const menuItem = restaurant.menu.find((item) => item.id === itemId);
+
+            if (!menuItem) return;
+
+            const cart = getCart();
+            const key = `${restaurant.id}-${menuItem.id}`;
+            const existingItem = cart.find((item) => item.key === key);
+
+            if (existingItem) {
+                existingItem.qty = Number(existingItem.qty || 0) + 1;
+            } else {
+                cart.push({
+                    key,
+                    restaurantId: restaurant.id,
+                    restaurantName: restaurant.name,
+                    name: menuItem.name,
+                    price: menuItem.price,
+                    qty: 1,
+                    emoji: menuItem.emoji
+                });
+            }
+
+            saveCart(cart);
+            showToast(`${menuItem.name} به سبد خرید اضافه شد`);
+        }
+
+        function renderNotFound() {
+            const content = document.getElementById("content");
+
+            content.innerHTML = `
+                <section class="section">
+                    <div class="empty">
+                        <h2>رستوران پیدا نشد</h2>
+                        <p>آدرس مورد نظر نامعتبر است یا رستوران وجود ندارد.</p>
+                        <a href="index.html" class="btn btn-primary">
+                            بازگشت به لیست رستوران‌ها
+                        </a>
+                    </div>
+                </section>
+            `;
+        }
+
+        function renderRestaurant() {
+            const params = new URLSearchParams(window.location.search);
+            const restaurantId = Number(params.get("id"));
+            const restaurant = restaurants.find((item) => item.id === restaurantId);
+            const content = document.getElementById("content");
+
+            if (!restaurant) {
+                renderNotFound();
+                return;
+            }
+
+            document.title = `${restaurant.name} | فود آردرینگ`;
+
+            content.innerHTML = `
+                <section class="restaurant-header">
+                    <a href="index.html" class="btn btn-outline">
+                        بازگشت به لیست رستوران‌ها
+                    </a>
+
+                    <div class="restaurant-card">
+                        <div class="restaurant-emoji">
+                            ${restaurant.emoji}
+                        </div>
+
+                        <div class="restaurant-info">
+                            <h1>${restaurant.name}</h1>
+
+                            <div class="badges">
+                                <span class="badge">${restaurant.category}</span>
+                                <span class="badge">⭐ ${restaurant.rating.toLocaleString("fa-IR")}</span>
+                                <span class="badge">⏱ ${restaurant.time}</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">منوی ${restaurant.name}</h2>
+
+                    <div class="menu-list">
+                        ${restaurant.menu.map((item) => `
+                            <article class="menu-item">
+                                <div class="menu-emoji">
+                                    ${item.emoji}
+                                </div>
+
+                                <div class="menu-info">
+                                    <h3>${item.name}</h3>
+                                    <p>${item.desc}</p>
+                                    <span class="price">${formatPrice(item.price)}</span>
+                                </div>
+
+                                <div class="menu-actions">
+                                    <button class="btn btn-primary" data-add="${item.id}">
+                                        افزودن به سبد
+                                    </button>
+                                </div>
+                            </article>
+                        `).join("")}
+                    </div>
+                </section>
+
+                <section class="section">
+                    <div class="cart-summary">
+                        <div class="total-row">
+                            <span>مجموع سبد خرید</span>
+                            <span id="cartTotal">${formatPrice(getCartTotal())}</span>
+                        </div>
+
+                        <div class="summary-actions">
+                            <a href="cart.html" class="btn btn-primary">
+                                مشاهده سبد خرید
+                            </a>
+
+                            <a href="checkout.html" class="btn btn-outline">
+                                پرداخت مستقیم
+                            </a>
+
+                            <a href="tracking.html" class="btn btn-outline">
+                                ردیابی سفارش
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        document.addEventListener("click", function (event) {
+            const addButton = event.target.closest("[data-add]");
+
+            if (addButton) {
+                addToCart(addButton.dataset.add);
+            }
+        });
+
+        window.addEventListener("storage", function () {
+            updateCartCount();
+            updateCartTotal();
+        });
+
+        renderRestaurant();
+        updateCartCount();
+        updateCartTotal();
+    </script>
+</body>
+</html>

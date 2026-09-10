@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فود آردرینگ | ردیابی سفارش</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            line-height: 1.9;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ─── Header ─── */
+        .header {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #f97316;
+        }
+
+        .nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #f97316;
+            color: #fff;
+        }
+
+        .cart-badge {
+            background: #f97316;
+            color: #fff;
+            border-radius: 999px;
+            padding: 1px 8px;
+            font-size: 12px;
+            margin-right: 4px;
+        }
+
+        .nav a.active .cart-badge {
+            background: #fff;
+            color: #f97316;
+        }
+
+        /* ─── Layout ─── */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px 16px 60px;
+        }
+
+        .page-title {
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        /* ─── Cards ─── */
+        .card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+            margin-bottom: 18px;
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 14px;
+            color: #334155;
+        }
+
+        /* ─── Status ─── */
+        .status-banner {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff7ed, #ffedd5);
+            border-radius: 14px;
+            margin-bottom: 18px;
+        }
+
+        .status-banner .status-icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+
+        .status-banner .status-text {
+            font-size: 24px;
+            font-weight: 900;
+            color: #c2410c;
+        }
+
+        .status-banner .status-sub {
+            font-size: 14px;
+            color: #9a3412;
+            margin-top: 4px;
+        }
+
+        /* ─── Progress Bar ─── */
+        .progress-track {
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+            margin: 16px 0 24px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f97316, #fb923c);
+            border-radius: 999px;
+            transition: width 0.6s ease;
+        }
+
+        /* ─── Timeline ─── */
+        .timeline {
+            display: grid;
+            gap: 0;
+        }
+
+        .timeline-step {
+            display: grid;
+            grid-template-columns: 48px 1fr;
+            gap: 14px;
+            position: relative;
+            padding-bottom: 24px;
+        }
+
+        .timeline-step:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-step::before {
+            content: "";
+            position: absolute;
+            right: 23px;
+            top: 48px;
+            bottom: 0;
+            width: 2px;
+            background: #e2e8f0;
+        }
+
+        .timeline-step:last-child::before {
+            display: none;
+        }
+
+        .timeline-step.done::before {
+            background: #16a34a;
+        }
+
+        .step-dot {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            background: #e2e8f0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-step.done .step-dot {
+            background: #dcfce7;
+            border: 2px solid #16a34a;
+        }
+
+        .timeline-step.active .step-dot {
+            background: #ffedd5;
+            border: 2px solid #f97316;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.3); }
+            50% { box-shadow: 0 0 0 8px rgba(249, 115, 22, 0); }
+        }
+
+        .step-content strong {
+            font-size: 15px;
+            display: block;
+        }
+
+        .step-content span {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .timeline-step.pending .step-content {
+            opacity: 0.5;
+        }
+
+        /* ─── Grid ─── */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 18px;
+            align-items: start;
+        }
+
+        /* ─── Items ─── */
+        .item-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid #f1f5f9;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            background: #fafafa;
+        }
+
+        .item-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-name {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .item-restaurant {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .item-price {
+            font-weight: 800;
+            color: #c2410c;
+            white-space: nowrap;
+            font-size: 14px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 14px;
+            margin-top: 12px;
+            border-top: 2px solid #e2e8f0;
+            font-size: 18px;
+            font-weight: 900;
+        }
+
+        .total-row .amount {
+            color: #c2410c;
+            font-size: 20px;
+        }
+
+        /* ─── Info Rows ─── */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-row .label {
+            color: #64748b;
+            white-space: nowrap;
+            font-weight: 700;
+        }
+
+        .info-row .value {
+            text-align: left;
+            word-break: break-word;
+            font-weight: 600;
+        }
+
+        /* ─── Buttons ─── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 14px;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #f97316;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #ea580c;
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
+        }
+
+        .btn-outline:hover {
+            background: #f8fafc;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .actions .btn {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        /* ─── Orders List ─── */
+        .order-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            background: #fafafa;
+            transition: 0.2s;
+        }
+
+        .order-row:hover {
+            background: #fff7ed;
+            border-color: #fdba74;
+        }
+
+        .order-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .order-row .order-id {
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .order-row .order-date {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* ─── Empty State ─── */
+        .empty {
+            text-align: center;
+            padding: 60px 24px;
+            background: #fff;
+            border: 2px dashed #e2e8f0;
+            border-radius: 20px;
+        }
+
+        .empty .icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .empty p {
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .empty .actions {
+            justify-content: center;
+        }
+
+        /* ─── Badge ─── */
+        .badge {
+            display: inline-block;
+            background: #fff7ed;
+            color: #c2410c;
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .meta-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 18px;
+        }
+
+        /* ─── Footer ─── */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #e2e8f0;
+            background: #fff;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 800px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">🍽️ فود آردرینگ</a>
+            <nav class="nav">
+                <a href="index.html">رستوران‌ها</a>
+                <a href="cart.html">سبد خرید <span class="cart-badge" id="cartBadge"></span></a>
+                <a href="tracking.html" class="active">ردیابی سفارش</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container" id="app"></main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        سیستم نمونه سفارش غذا | HTML + CSS + JS
+    </footer>
+
+    <script>
+        // ─────────────────────────────────────────────
+        // Constants & Helpers
+        // ─────────────────────────────────────────────
+        const ORDERS_KEY = "foodOrders";
+        const CART_KEY = "foodCart";
+
+        function formatPrice(value) {
+            return new Intl.NumberFormat("fa-IR").format(Number(value || 0)) + " تومان";
+        }
+
+        function formatDate(timestamp) {
+            return new Intl.DateTimeFormat("fa-IR", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            }).format(new Date(Number(timestamp) || Date.now()));
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement("div");
+            div.textContent = str || "";
+            return div.innerHTML;
+        }
+
+        function getOrders() {
+            try {
+                return JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+            } catch {
+                return [];
+            }
+        }
+
+        function getCartCount() {
+            try {
+                const cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+                return cart.reduce((sum, item) => sum + Number(item.qty || 0), 0);
+            } catch {
+                return 0;
+            }
+        }
+
+        function updateCartBadge() {
+            const badge = document.getElementById("cartBadge");
+            const count = getCartCount();
+            badge.textContent = count > 0 ? count.toLocaleString("fa-IR") : "";
+            badge.style.display = count > 0 ? "inline-block" : "none";
+        }
+
+        // ─────────────────────────────────────────────
+        // Status Logic
+        // ─────────────────────────────────────────────
+        const STEPS = [
+            { icon: "🧾", label: "ثبت سفارش", desc: "سفارش شما با موفقیت ثبت شد" },
+            { icon: "👨‍🍳", label: "در حال آماده‌سازی", desc: "رستوران در حال پخت غذاست" },
+            { icon: "🛵", label: "در حال ارسال", desc: "پیک در راه شماست" },
+            { icon: "✅", label: "تحویل شد", desc: "سفارش با موفقیت تحویل داده شد" }
+        ];
+
+        function getStatusIndex(order) {
+            // If manually set to delivered
+            if (order.status === "تحویل شد" || order.status === "delivered") return 3;
+
+            const elapsed = (Date.now() - (Number(order.createdAt) || Date.now())) / 1000;
+
+            if (elapsed < 15) return 1;
+            if (elapsed < 45) return 2;
+            return 3;
+        }
+
+        // ─────────────────────────────────────────────
+        // Render Functions
+        // ─────────────────────────────────────────────
+        function renderEmpty() {
+            document.getElementById("app").innerHTML = `
+                <div class="empty">
+                    <div class="icon">📦</div>
+                    <h2>سفارشی برای ردیابی پیدا نشد</h2>
+                    <p>هنوز هیچ سفارشی ثبت نکرده‌اید. از رستوران‌ها انتخاب کنید و سفارش دهید.</p>
+                    <div class="actions">
+                        <a href="index.html" class="btn btn-primary">مشاهده رستوران‌ها</a>
+                        <a href="cart.html" class="btn btn-outline">سبد خرید</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderNotFound(orderId) {
+            document.getElementById("app").innerHTML = `
+                <div class="empty">
+                    <div class="icon">❓</div>
+                    <h2>سفارش پیدا نشد</h2>
+                    <p>کد سفارش <strong>${escapeHtml(orderId)}</strong> در این مرورگر یافت نشد.</p>
+                    <div class="actions">
+                        <a href="tracking.html" class="btn btn-primary">مشاهده آخرین سفارش</a>
+                        <a href="index.html" class="btn btn-outline">بازگشت به خانه</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderOrder(order) {
+            const statusIdx = getStatusIndex(order);
+            const progress = Math.round((statusIdx / (STEPS.length - 1)) * 100);
+            const currentStep = STEPS[statusIdx];
+            const customer = order.customer || {};
+            const items = order.items || [];
+            const orders = getOrders();
+            const otherOrders = orders.filter(o => o.id !== order.id);
+
+            const paymentLabel = customer.payment === "cash"
+                ? "پرداخت در محل"
+                : "پرداخت با کارت";
+
+            const app = document.getElementById("app");
+
+            app.innerHTML = `
+                <!-- Meta -->
+                <div class="meta-row">
+                    <span class="badge">📋 کد: ${escapeHtml(order.id)}</span>
+                    <span class="badge">🕐 ${formatDate(order.createdAt)}</span>
+                    <span class="badge">💰 ${formatPrice(order.total)}</span>
+                </div>
+
+                <!-- Status Banner -->
+                <div class="status-banner">
+                    <div class="status-icon">${currentStep.icon}</div>
+                    <div class="status-text">${currentStep.label}</div>
+                    <div class="status-sub">${currentStep.desc}</div>
+                </div>
+
+                <!-- Progress -->
+                <div class="progress-track">
+                    <div class="progress-fill" style="width: ${progress}%"></div>
+                </div>
+
+                <!-- Timeline -->
+                <div class="card">
+                    <h2>مراحل سفارش</h2>
+                    <div class="timeline">
+                        ${STEPS.map((step, i) => {
+                            let cls = "pending";
+                            if (i < statusIdx) cls = "done";
+                            else if (i === statusIdx) cls = "active";
+
+                            const stateText = i < statusIdx ? "✓ انجام شد"
+                                : i === statusIdx ? "⏳ در حال انجام"
+                                : "در انتظار";
+
+                            return `
+                                <div class="timeline-step ${cls}">
+                                    <div class="step-dot">${step.icon}</div>
+                                    <div class="step-content">
+                                        <strong>${step.label}</strong>
+                                        <span>${stateText}</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join("")}
+                    </div>
+                </div>
+
+                <!-- Details Grid -->
+                <div class="grid-2">
+                    <!-- Items -->
+                    <div class="card">
+                        <h2>اقلام سفارش</h2>
+                        ${items.map(item => `
+                            <div class="item-row">
+                                <div>
+                                    <div class="item-name">${item.emoji || "🍽️"} ${escapeHtml(item.name)}</div>
+                                    <div class="item-restaurant">${escapeHtml(item.restaurantName || "")}</div>
+                                </div>
+                                <div class="item-price">
+                                    ${Number(item.qty).toLocaleString("fa-IR")} × ${formatPrice(item.price)}
+                                </div>
+                            </div>
+                        `).join("")}
+
+                        <div class="total-row">
+                            <span>مبلغ کل</span>
+                            <span class="amount">${formatPrice(order.total)}</span>
+                        </div>
+                    </div>
+
+                    <!-- Customer Info -->
+                    <div class="card">
+                        <h2>اطلاعات مشتری</h2>
+
+                        <div class="info-row">
+                            <span class="label">نام</span>
+                            <span class="value">${escapeHtml(customer.name || "—")}</span>
+                        </div>
+
+                        <div class="info-row">
+                            <span class="label">موبایل</span>
+                            <span class="value">${escapeHtml(customer.phone || "—")}</span>
+                        </div>
+
+                        <div class="info-row">
+                            <span class="label">آدرس</span>
+                            <span class="value">${escapeHtml(customer.address || "—")}</span>
+                        </div>
+
+                        <div class="info-row">
+                            <span class="label">پرداخت</span>
+                            <span class="value">${paymentLabel}</span>
+                        </div>
+
+                        ${customer.cardLast4 ? `
+                        <div class="info-row">
+                            <span class="label">کارت</span>
+                            <span class="value">**** **** **** ${escapeHtml(customer.cardLast4)}</span>
+                        </div>
+                        ` : ""}
+
+                        <div class="actions">
+                            <a href="index.html" class="btn btn-primary">سفارش جدید</a>
+                            <a href="cart.html" class="btn btn-outline">سبد خرید</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Other Orders -->
+                ${otherOrders.length > 0 ? `
+                <div class="card">
+                    <h2>سفارش‌های دیگر</h2>
+                    ${otherOrders.map(o => `
+                        <div class="order-row">
+                            <div>
+                                <div class="order-id">${escapeHtml(o.id)}</div>
+                                <div class="order-date">${formatDate(o.createdAt)} | ${formatPrice(o.total)}</div>
+                            </div>
+                            <a href="tracking.html?order=${encodeURIComponent(o.id)}" class="btn btn-outline">مشاهده</a>
+                        </div>
+                    `).join("")}
+                </div>
+                ` : ""}
+            `;
+        }
+
+        // ─────────────────────────────────────────────
+        // Init
+        // ─────────────────────────────────────────────
+        function init() {
+            updateCartBadge();
+
+            const params = new URLSearchParams(window.location.search);
+            const orderId = params.get("order");
+            const orders = getOrders();
+
+            if (orderId) {
+                const order = orders.find(o => o.id === orderId);
+                if (!order) {
+                    renderNotFound(orderId);
+                    return;
+                }
+                renderOrder(order);
+                return;
+            }
+
+            if (orders.length === 0) {
+                renderEmpty();
+                return;
+            }
+
+            // Show latest order
+            renderOrder(orders);
+        }
+
+        // Re-render on storage change (e.g. new order from checkout)
+        window.addEventListener("storage", init);
+
+        // Auto-refresh status every 5 seconds
+        setInterval(init, 5000);
+
+        init();
+    </script>
+</body>
+</html>

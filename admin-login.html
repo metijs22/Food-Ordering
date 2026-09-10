@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فود آردرینگ | ورود به پنل مدیریت</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            line-height: 1.9;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .header {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #f97316;
+        }
+
+        .nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #f97316;
+            color: #fff;
+        }
+
+        .main {
+            min-height: calc(100vh - 160px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .login-card h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .login-card p {
+            color: #64748b;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 800;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #334155;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            background: #fff;
+            color: #0f172a;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #f97316;
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 18px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 15px;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #f97316;
+            color: #fff;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            background: #ea580c;
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
+        }
+
+        .btn-outline:hover {
+            background: #f8fafc;
+        }
+
+        .hint {
+            margin-top: 14px;
+            font-size: 13px;
+            color: #64748b;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 10px 12px;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            border-radius: 12px;
+            padding: 10px 12px;
+            margin-bottom: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #e2e8f0;
+            background: #fff;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .login-card {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">🍽️ فود آردرینگ</a>
+
+            <nav class="nav">
+                <a href="index.html">رستوران‌ها</a>
+                <a href="cart.html">سبد خرید</a>
+                <a href="tracking.html">ردیابی سفارش</a>
+                <a href="admin-login.html" class="active">ورود مدیریت</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="login-card">
+            <h1>ورود به پنل مدیریت</h1>
+            <p>برای مدیریت سفارش‌ها وارد شوید.</p>
+
+            <div class="error" id="errorBox">
+                نام کاربری یا رمز عبور اشتباه است.
+            </div>
+
+            <form id="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="username">نام کاربری</label>
+                    <input type="text" id="username" name="username" placeholder="admin" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">رمز عبور</label>
+                    <input type="password" id="password" name="password" placeholder="••••••" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    ورود به پنل
+                </button>
+            </form>
+
+            <div class="hint">
+                <strong>داده‌های تست:</strong><br>
+                نام کاربری: <strong>admin</strong><br>
+                رمز عبور: <strong>123456</strong>
+            </div>
+
+            <div style="margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="index.html" class="btn btn-outline" style="flex:1;">بازگشت به سایت</a>
+                <a href="tracking.html" class="btn btn-outline" style="flex:1;">ردیابی سفارش</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        سیستم نمونه سفارش غذا | HTML + CSS + JS
+    </footer>
+
+    <script>
+        const ADMIN_KEY = "adminAuth";
+
+        // اگر قبلاً لاگین کرده باشد، مستقیم به پنل ادمین بفرست
+        if (localStorage.getItem(ADMIN_KEY) === "true") {
+            window.location.replace("admin.html");
+        }
+
+        const form = document.getElementById("loginForm");
+        const errorBox = document.getElementById("errorBox");
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            // فقط برای دمو - در پروژه واقعی حتماً از سمت سرور احراز هویت انجام شود
+            if (username === "admin" && password === "123456") {
+                localStorage.setItem(ADMIN_KEY, "true");
+                localStorage.setItem("adminUser", "admin");
+                window.location.href = "admin.html";
+            } else {
+                errorBox.classList.add("show");
+            }
+        });
+    </script>
+</body>
+</html>

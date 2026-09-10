@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فود آردرینگ | لیست رستوران‌ها</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            line-height: 1.9;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ─── Header ─── */
+        .header {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #f97316;
+        }
+
+        .nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #f97316;
+            color: #fff;
+        }
+
+        .nav a.admin-link {
+            background: #1e293b;
+            color: #fff;
+        }
+
+        .nav a.admin-link:hover {
+            background: #0f172a;
+        }
+
+        .cart-badge {
+            background: #f97316;
+            color: #fff;
+            border-radius: 999px;
+            padding: 1px 8px;
+            font-size: 12px;
+            margin-right: 4px;
+        }
+
+        .nav a.active .cart-badge {
+            background: #fff;
+            color: #f97316;
+        }
+
+        /* ─── Hero ─── */
+        .hero {
+            padding: 34px 0 18px;
+        }
+
+        .hero h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            color: #64748b;
+            margin-bottom: 18px;
+        }
+
+        .search-box {
+            max-width: 480px;
+        }
+
+        .input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #fff;
+            font-size: 15px;
+            font-family: inherit;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: #f97316;
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+        }
+
+        /* ─── Quick Links ─── */
+        .quick-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+        }
+
+        .quick-links a {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .quick-links a:hover {
+            background: #fff7ed;
+            border-color: #fdba74;
+            color: #c2410c;
+        }
+
+        .quick-links a.admin-quick {
+            background: #1e293b;
+            color: #fff;
+            border-color: #1e293b;
+        }
+
+        .quick-links a.admin-quick:hover {
+            background: #0f172a;
+            border-color: #0f172a;
+            color: #fff;
+        }
+
+        /* ─── Section ─── */
+        .section-title {
+            font-size: 24px;
+            margin: 24px 0 16px;
+        }
+
+        /* ─── Grid ─── */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 18px;
+            padding-bottom: 40px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            transition: 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-img {
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            background: linear-gradient(135deg, #fff7ed, #ffedd5);
+        }
+
+        .card-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .card-title {
+            font-size: 18px;
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #fff7ed;
+            color: #c2410c;
+            border-radius: 999px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        /* ─── Buttons ─── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 15px;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #f97316;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #ea580c;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        /* ─── Empty ─── */
+        .empty {
+            background: #fff;
+            border: 2px dashed #e2e8f0;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            color: #64748b;
+            grid-column: 1 / -1;
+        }
+
+        /* ─── Footer ─── */
+        .footer {
+            padding: 22px 0;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+            text-align: center;
+            background: #fff;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 26px;
+            }
+
+            .header-inner {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">🍽️ فود آردرینگ</a>
+
+            <nav class="nav">
+                <a href="index.html" class="active">رستوران‌ها</a>
+                <a href="cart.html">سبد خرید <span class="cart-badge" id="cartBadge"></span></a>
+                <a href="tracking.html">ردیابی سفارش</a>
+                <a href="admin-login.html" class="admin-link">🔐 پنل مدیریت</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <main class="container" style="max-width:1100px; margin:0 auto; padding:0 16px;">
+        <section class="hero">
+            <h1>سفارش آنلاین غذا 🍕</h1>
+            <p>بهترین رستوران‌ها را ببینید و سفارش دهید.</p>
+
+            <div class="search-box">
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="input"
+                    placeholder="🔍 جستجوی رستوران یا دسته‌بندی..."
+                >
+            </div>
+
+            <div class="quick-links">
+                <a href="restaurant.html?id=1">🍔 رستوران نمونه</a>
+                <a href="cart.html">🛒 سبد خرید</a>
+                <a href="checkout.html">💳 پرداخت</a>
+                <a href="tracking.html">📦 ردیابی سفارش</a>
+                <a href="admin-login.html" class="admin-quick">🔐 ورود مدیریت</a>
+            </div>
+        </section>
+
+        <!-- Restaurants Grid -->
+        <section>
+            <h2 class="section-title">رستوران‌های پیشنهادی</h2>
+            <div id="restaurantGrid" class="grid"></div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        سیستم نمونه سفارش غذا | HTML + CSS + JS
+    </footer>
+
+    <script>
+        // ─────────────────────────────────────────────
+        // Data
+        // ─────────────────────────────────────────────
+        const restaurants = [
+            {
+                id: 1,
+                name: "رستوران زعفران",
+                category: "فست‌فود",
+                rating: 4.8,
+                time: "20 تا 35 دقیقه",
+                minPrice: 185000,
+                emoji: "🍔"
+            },
+            {
+                id: 2,
+                name: "کافه و رستوران آفتاب",
+                category: "غذای ایرانی",
+                rating: 4.6,
+                time: "30 تا 45 دقیقه",
+                minPrice: 250000,
+                emoji: "🍛"
+            },
+            {
+                id: 3,
+                name: "پیتزرای رومی",
+                category: "پیتزا",
+                rating: 4.5,
+                time: "25 تا 40 دقیقه",
+                minPrice: 220000,
+                emoji: "🍕"
+            },
+            {
+                id: 4,
+                name: "رستوران سوشی شرق",
+                category: "غذای ژاپنی",
+                rating: 4.7,
+                time: "35 تا 50 دقیقه",
+                minPrice: 320000,
+                emoji: "🍣"
+            }
+        ];
+
+        // ─────────────────────────────────────────────
+        // Helpers
+        // ─────────────────────────────────────────────
+        function formatPrice(value) {
+            return new Intl.NumberFormat("fa-IR").format(value) + " تومان";
+        }
+
+        function getCartCount() {
+            try {
+                const cart = JSON.parse(localStorage.getItem("foodCart")) || [];
+                return cart.reduce((sum, item) => sum + Number(item.qty || 0), 0);
+            } catch {
+                return 0;
+            }
+        }
+
+        function updateCartBadge() {
+            const badge = document.getElementById("cartBadge");
+            const count = getCartCount();
+            badge.textContent = count > 0 ? count.toLocaleString("fa-IR") : "";
+            badge.style.display = count > 0 ? "inline-block" : "none";
+        }
+
+        // ─────────────────────────────────────────────
+        // Render
+        // ─────────────────────────────────────────────
+        function renderRestaurants(query = "") {
+            const grid = document.getElementById("restaurantGrid");
+            const q = query.trim();
+
+            const filtered = restaurants.filter(r =>
+                r.name.includes(q) || r.category.includes(q)
+            );
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty">
+                        <div style="font-size:48px; margin-bottom:12px;">🔍</div>
+                        <p>رستورانی با این مشخصات پیدا نشد.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(r => `
+                <article class="card">
+                    <a href="restaurant.html?id=${r.id}" class="card-img">${r.emoji}</a>
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            <a href="restaurant.html?id=${r.id}">${r.name}</a>
+                        </h3>
+                        <div class="card-meta">
+                            <span>${r.category}</span>
+                            <span>⭐ ${r.rating.toLocaleString("fa-IR")}</span>
+                        </div>
+                        <div class="card-meta">
+                            <span>⏱ ${r.time}</span>
+                            <span>از ${formatPrice(r.minPrice)}</span>
+                        </div>
+                        <span class="badge">پیشنهاد امروز</span>
+                        <a href="restaurant.html?id=${r.id}" class="btn btn-primary btn-block">
+                            مشاهده منو
+                        </a>
+                    </div>
+                </article>
+            `).join("");
+        }
+
+        // ─────────────────────────────────────────────
+        // Events
+        // ─────────────────────────────────────────────
+        document.getElementById("searchInput").addEventListener("input", function (e) {
+            renderRestaurants(e.target.value);
+        });
+
+        // ─────────────────────────────────────────────
+        // Init
+        // ─────────────────────────────────────────────
+        renderRestaurants();
+        updateCartBadge();
+    </script>
+</body>
+</html>

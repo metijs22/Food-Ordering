@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فود آردرینگ | پنل مدیریت</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            line-height: 1.9;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .header {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #f97316;
+        }
+
+        .nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #f97316;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 16px 60px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .page-title {
+            font-size: 26px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 14px;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #f97316;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #ea580c;
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
+        }
+
+        .btn-outline:hover {
+            background: #f8fafc;
+        }
+
+        .btn-danger {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .btn-danger:hover {
+            background: #fecaca;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-card .label {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 700;
+        }
+
+        .stat-card .value {
+            font-size: 26px;
+            font-weight: 900;
+            margin-top: 6px;
+            color: #0f172a;
+        }
+
+        .stat-card .icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .toolbar {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 220px;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #f97316;
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+        }
+
+        .table-wrapper {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th,
+        td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: right;
+            vertical-align: middle;
+            font-size: 14px;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #64748b;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #fafafa;
+        }
+
+        .order-id {
+            font-weight: 800;
+            color: #c2410c;
+        }
+
+        .customer-name {
+            font-weight: 700;
+        }
+
+        .customer-phone {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .status-select {
+            padding: 8px 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            background: #fff;
+            color: #0f172a;
+            min-width: 150px;
+        }
+
+        .status-select:focus {
+            outline: none;
+            border-color: #f97316;
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
+        }
+
+        .actions-cell {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .actions-cell .btn {
+            padding: 8px 12px;
+            font-size: 13px;
+        }
+
+        .empty {
+            padding: 50px 20px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .empty .icon {
+            font-size: 56px;
+            margin-bottom: 12px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #e2e8f0;
+            background: #fff;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        @media (max-width: 700px) {
+            .page-title {
+                font-size: 22px;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .actions-cell {
+                flex-direction: column;
+            }
+
+            .actions-cell .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">🍽️ فود آردرینگ</a>
+
+            <nav class="nav">
+                <a href="index.html">رستوران‌ها</a>
+                <a href="cart.html">سبد خرید</a>
+                <a href="tracking.html">ردیابی سفارش</a>
+                <a href="admin.html" class="active">پنل مدیریت</a>
+                <a href="admin-login.html" id="logoutLink">خروج</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="page-header">
+            <h1 class="page-title">پنل مدیریت سفارش‌ها</h1>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <a href="index.html" class="btn btn-outline">مشاهده سایت</a>
+                <a href="tracking.html" class="btn btn-outline">ردیابی سفارش</a>
+            </div>
+        </div>
+
+        <div class="stats-grid" id="statsGrid"></div>
+
+        <div class="toolbar">
+            <input
+                type="text"
+                class="search-input"
+                id="searchInput"
+                placeholder="جستجو بر اساس کد سفارش، نام مشتری یا شماره موبایل..."
+            >
+
+            <button class="btn btn-danger" id="clearAllOrdersBtn">
+                حذف همه سفارش‌ها
+            </button>
+        </div>
+
+        <div class="table-wrapper">
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>کد سفارش</th>
+                            <th>تاریخ</th>
+                            <th>مشتری</th>
+                            <th>تعداد اقلام</th>
+                            <th>مبلغ</th>
+                            <th>وضعیت</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        سیستم نمونه سفارش غذا | HTML + CSS + JS
+    </footer>
+
+    <script>
+        const ADMIN_KEY = "adminAuth";
+        const ORDERS_KEY = "foodOrders";
+
+        // اگر لاگین نباشد، به صفحه ورود ادمین بفرست
+        if (localStorage.getItem(ADMIN_KEY) !== "true") {
+            window.location.replace("admin-login.html");
+        }
+
+        const STATUSES = [
+            "در حال آماده‌سازی",
+            "در حال ارسال",
+            "تحویل شد"
+        ];
+
+        function formatPrice(value) {
+            return new Intl.NumberFormat("fa-IR").format(Number(value || 0)) + " تومان";
+        }
+
+        function formatDate(timestamp) {
+            return new Intl.DateTimeFormat("fa-IR", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit"
+            }).format(new Date(Number(timestamp) || Date.now()));
+        }
+
+        function escapeHtml(value) {
+            const div = document.createElement("div");
+            div.textContent = value || "";
+            return div.innerHTML;
+        }
+
+        function getOrders() {
+            try {
+                return JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveOrders(orders) {
+            localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+        }
+
+        function renderStats() {
+            const orders = getOrders();
+
+            const totalOrders = orders.length;
+            const totalRevenue = orders.reduce((sum, order) => sum + Number(order.total || 0), 0);
+
+            const deliveredCount = orders.filter(
+                order => order.status === "تحویل شد"
+            ).length;
+
+            const preparingCount = orders.filter(
+                order => order.status === "در حال آماده‌سازی"
+            ).length;
+
+            const deliveringCount = orders.filter(
+                order => order.status === "در حال ارسال"
+            ).length;
+
+            document.getElementById("statsGrid").innerHTML = `
+                <div class="stat-card">
+                    <div class="icon">📦</div>
+                    <div class="label">کل سفارش‌ها</div>
+                    <div class="value">${totalOrders.toLocaleString("fa-IR")}</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon">💰</div>
+                    <div class="label">مجموع فروش</div>
+                    <div class="value">${formatPrice(totalRevenue)}</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon">👨‍🍳</div>
+                    <div class="label">در حال آماده‌سازی</div>
+                    <div class="value">${preparingCount.toLocaleString("fa-IR")}</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon">🛵</div>
+                    <div class="label">در حال ارسال</div>
+                    <div class="value">${deliveringCount.toLocaleString("fa-IR")}</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="icon">✅</div>
+                    <div class="label">تحویل شده</div>
+                    <div class="value">${deliveredCount.toLocaleString("fa-IR")}</div>
+                </div>
+            `;
+        }
+
+        function renderOrders() {
+            const orders = getOrders();
+            const search = document.getElementById("searchInput").value.trim();
+            const tbody = document.getElementById("ordersBody");
+
+            const filteredOrders = orders.filter(order => {
+                if (!search) return true;
+
+                const id = order.id || "";
+                const name = order.customer && order.customer.name ? order.customer.name : "";
+                const phone = order.customer && order.customer.phone ? order.customer.phone : "";
+
+                return id.includes(search) ||
+                       name.includes(search) ||
+                       phone.includes(search);
+            });
+
+            if (filteredOrders.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty">
+                                <div class="icon">📭</div>
+                                <div>سفارشی پیدا نشد.</div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = filteredOrders.map(order => {
+                const customer = order.customer || {};
+                const items = order.items || [];
+                const itemCount = items.reduce((sum, item) => sum + Number(item.qty || 0), 0);
+                const currentStatus = order.status || "در حال آماده‌سازی";
+
+                const statusOptions = STATUSES.map(status => `
+                    <option value="${status}" ${status === currentStatus ? "selected" : ""}>
+                        ${status}
+                    </option>
+                `).join("");
+
+                return `
+                    <tr>
+                        <td>
+                            <div class="order-id">${escapeHtml(order.id)}</div>
+                        </td>
+
+                        <td>
+                            ${formatDate(order.createdAt)}
+                        </td>
+
+                        <td>
+                            <div class="customer-name">${escapeHtml(customer.name || "—")}</div>
+                            <div class="customer-phone">${escapeHtml(customer.phone || "—")}</div>
+                        </td>
+
+                        <td>
+                            ${itemCount.toLocaleString("fa-IR")} قلم
+                        </td>
+
+                        <td>
+                            <strong>${formatPrice(order.total)}</strong>
+                        </td>
+
+                        <td>
+                            <select class="status-select" data-order-id="${escapeHtml(order.id)}">
+                                ${statusOptions}
+                            </select>
+                        </td>
+
+                        <td>
+                            <div class="actions-cell">
+                                <a href="tracking.html?order=${encodeURIComponent(order.id)}" class="btn btn-outline">
+                                    ردیابی
+                                </a>
+
+                                <button class="btn btn-danger" data-delete="${escapeHtml(order.id)}">
+                                    حذف
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+        }
+
+        function renderAll() {
+            renderStats();
+            renderOrders();
+        }
+
+        // تغییر وضعیت سفارش
+        document.addEventListener("change", function (event) {
+            const select = event.target.closest(".status-select");
+
+            if (!select) return;
+
+            const orderId = select.dataset.orderId;
+            const newStatus = select.value;
+
+            const orders = getOrders();
+            const order = orders.find(item => item.id === orderId);
+
+            if (!order) return;
+
+            order.status = newStatus;
+            saveOrders(orders);
+
+            renderAll();
+        });
+
+        // حذف یک سفارش
+        document.addEventListener("click", function (event) {
+            const deleteBtn = event.target.closest("[data-delete]");
+
+            if (!deleteBtn) return;
+
+            const orderId = deleteBtn.dataset.delete;
+
+            if (!confirm("آیا از حذف این سفارش مطمئن هستید؟")) return;
+
+            const orders = getOrders();
+            const filteredOrders = orders.filter(order => order.id !== orderId);
+
+            saveOrders(filteredOrders);
+            renderAll();
+        });
+
+        // جستجو
+        document.getElementById("searchInput").addEventListener("input", function () {
+            renderOrders();
+        });
+
+        // حذف همه سفارش‌ها
+        document.getElementById("clearAllOrdersBtn").addEventListener("click", function () {
+            if (!confirm("همه سفارش‌ها حذف شوند؟ این عملیات بازگشت‌پذیر نیست.")) return;
+
+            localStorage.removeItem(ORDERS_KEY);
+            renderAll();
+        });
+
+        // خروج از پنل
+        document.getElementById("logoutLink").addEventListener("click", function (event) {
+            event.preventDefault();
+
+            localStorage.removeItem(ADMIN_KEY);
+            localStorage.removeItem("adminUser");
+
+            window.location.href = "admin-login.html";
+        });
+
+        // اگر در تب دیگر سفارش جدید ثبت شود، اینجا هم به‌روز شود
+        window.addEventListener("storage", renderAll);
+
+        renderAll();
+    </script>
+</body>
+</html>

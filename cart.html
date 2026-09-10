@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فود آردرینگ | سبد خرید</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            line-height: 1.9;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 14px 0;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #f97316;
+        }
+
+        .nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            padding: 8px 14px;
+            border-radius: 999px;
+            background-color: #f1f5f9;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background-color: #f97316;
+            color: #ffffff;
+        }
+
+        .cart-badge {
+            background-color: #f97316;
+            color: #ffffff;
+            border-radius: 999px;
+            padding: 2px 8px;
+            font-size: 12px;
+            margin-right: 6px;
+        }
+
+        .nav a.active .cart-badge {
+            background-color: #ffffff;
+            color: #f97316;
+        }
+
+        .section {
+            padding: 24px 0;
+        }
+
+        .section-title {
+            font-size: 24px;
+            margin: 0 0 16px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 0;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #f97316;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #ea580c;
+        }
+
+        .btn-outline {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
+        }
+
+        .btn-outline:hover {
+            background-color: #f8fafc;
+        }
+
+        .btn-danger {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+
+        .btn-danger:hover {
+            background-color: #fecaca;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .cart-table-wrapper {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(2, 6, 23, 0.06);
+        }
+
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .cart-table th,
+        .cart-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: right;
+            vertical-align: middle;
+        }
+
+        .cart-table th {
+            background-color: #f8fafc;
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 800;
+        }
+
+        .cart-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .cart-table tr:hover td {
+            background-color: #fafafa;
+        }
+
+        .item-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .item-emoji {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            background-color: #fff7ed;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .item-name {
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .item-restaurant {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .price {
+            color: #c2410c;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .qty-control {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .qty-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            background-color: #ffffff;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            color: #0f172a;
+        }
+
+        .qty-btn:hover {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .qty-value {
+            min-width: 30px;
+            text-align: center;
+            font-weight: 800;
+            font-size: 16px;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            padding: 6px;
+            border-radius: 8px;
+            transition: 0.2s;
+            color: #dc2626;
+        }
+
+        .remove-btn:hover {
+            background-color: #fee2e2;
+        }
+
+        .cart-summary {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(2, 6, 23, 0.06);
+        }
+
+        .summary-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 15px;
+        }
+
+        .summary-row.total {
+            border-top: 2px solid #e2e8f0;
+            margin-top: 10px;
+            padding-top: 14px;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .summary-row.total .price {
+            font-size: 22px;
+        }
+
+        .summary-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 18px;
+        }
+
+        .summary-actions .btn {
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .empty {
+            background-color: #ffffff;
+            border: 1px dashed #e2e8f0;
+            border-radius: 16px;
+            padding: 60px 30px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .empty-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty h2 {
+            margin: 0 0 8px;
+            color: #0f172a;
+        }
+
+        .empty p {
+            margin: 0 0 20px;
+        }
+
+        .empty-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .footer {
+            padding: 22px 0;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+            text-align: center;
+            background-color: #ffffff;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 50%;
+            transform: translateX(50%) translateY(20px);
+            background-color: #0f172a;
+            color: #ffffff;
+            padding: 12px 18px;
+            border-radius: 12px;
+            font-weight: 700;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.25s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(50%) translateY(0);
+        }
+
+        @media (max-width: 700px) {
+            .cart-table th:nth-child(2),
+            .cart-table td:nth-child(2) {
+                display: none;
+            }
+
+            .cart-table th:nth-child(4),
+            .cart-table td:nth-child(4) {
+                display: none;
+            }
+
+            .summary-actions {
+                flex-direction: column;
+            }
+
+            .summary-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">🍽️ فود آردرینگ</a>
+
+            <nav class="nav">
+                <a href="index.html">رستوران‌ها</a>
+                <a href="cart.html" class="active">سبد خرید <span id="cartCount" class="cart-badge"></span></a>
+                <a href="tracking.html">ردیابی سفارش</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" id="content">
+        <!-- محتوای سبد خرید با جاوااسکریپت اینجا رندر می‌شود -->
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>سیستم نمونه سفارش غذا | HTML + CSS + JS</p>
+        </div>
+    </footer>
+
+    <script>
+        function formatPrice(value) {
+            return new Intl.NumberFormat("fa-IR").format(value) + " تومان";
+        }
+
+        function getCart() {
+            try {
+                return JSON.parse(localStorage.getItem("foodCart") || "[]");
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem("foodCart", JSON.stringify(cart));
+            renderCart();
+        }
+
+        function getCartCount() {
+            return getCart().reduce((sum, item) => sum + Number(item.qty || 0), 0);
+        }
+
+        function getCartTotal() {
+            return getCart().reduce(
+                (sum, item) => sum + Number(item.price || 0) * Number(item.qty || 0),
+                0
+            );
+        }
+
+        function updateCartCount() {
+            const count = getCartCount();
+            const cartCountElement = document.getElementById("cartCount");
+
+            if (!cartCountElement) return;
+
+            cartCountElement.textContent = count
+                ? `(${count.toLocaleString("fa-IR")})`
+                : "";
+        }
+
+        function showToast(message) {
+            let toast = document.getElementById("toast");
+
+            if (!toast) {
+                toast = document.createElement("div");
+                toast.id = "toast";
+                toast.className = "toast";
+                document.body.appendChild(toast);
+            }
+
+            toast.textContent = message;
+            toast.classList.add("show");
+
+            clearTimeout(toast.hideTimer);
+            toast.hideTimer = setTimeout(() => {
+                toast.classList.remove("show");
+            }, 2000);
+        }
+
+        function changeQty(key, delta) {
+            const cart = getCart();
+            const item = cart.find((i) => i.key === key);
+
+            if (!item) return;
+
+            item.qty = Number(item.qty || 0) + delta;
+
+            if (item.qty <= 0) {
+                const index = cart.indexOf(item);
+                cart.splice(index, 1);
+                showToast(`${item.name} از سبد حذف شد`);
+            }
+
+            saveCart(cart);
+        }
+
+        function removeItem(key) {
+            const cart = getCart();
+            const item = cart.find((i) => i.key === key);
+
+            if (!item) return;
+
+            const index = cart.indexOf(item);
+            cart.splice(index, 1);
+
+            saveCart(cart);
+            showToast(`${item.name} از سبد حذف شد`);
+        }
+
+        function clearCart() {
+            localStorage.removeItem("foodCart");
+            renderCart();
+            showToast("سبد خرید خالی شد");
+        }
+
+        function renderEmptyCart() {
+            const content = document.getElementById("content");
+
+            content.innerHTML = `
+                <section class="section">
+                    <div class="empty">
+                        <div class="empty-icon">🛒</div>
+                        <h2>سبد خرید شما خالی است</h2>
+                        <p>هنوز هیچ موردی به سبد خرید اضافه نکرده‌اید.</p>
+
+                        <div class="empty-actions">
+                            <a href="index.html" class="btn btn-primary">
+                                مشاهده رستوران‌ها
+                            </a>
+                            <a href="tracking.html" class="btn btn-outline">
+                                ردیابی سفارش
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        function renderCart() {
+            const cart = getCart();
+            const content = document.getElementById("content");
+
+            updateCartCount();
+
+            if (cart.length === 0) {
+                renderEmptyCart();
+                return;
+            }
+
+            const total = getCartTotal();
+            const itemCount = getCartCount();
+
+            content.innerHTML = `
+                <section class="section">
+                    <h2 class="section-title">سبد خرید شما</h2>
+
+                    <div class="cart-table-wrapper">
+                        <table class="cart-table">
+                            <thead>
+                                <tr>
+                                    <th>آیتم</th>
+                                    <th>قیمت واحد</th>
+                                    <th>تعداد</th>
+                                    <th>جمع</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${cart.map((item) => `
+                                    <tr>
+                                        <td>
+                                            <div class="item-cell">
+                                                <div class="item-emoji">${item.emoji || "🍽️"}</div>
+                                                <div>
+                                                    <div class="item-name">${item.name}</div>
+                                                    <div class="item-restaurant">${item.restaurantName || ""}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="price">${formatPrice(item.price)}</span>
+                                        </td>
+                                        <td>
+                                            <div class="qty-control">
+                                                <button class="qty-btn" data-action="decrease" data-key="${item.key}">−</button>
+                                                <span class="qty-value">${Number(item.qty).toLocaleString("fa-IR")}</span>
+                                                <button class="qty-btn" data-action="increase" data-key="${item.key}">+</button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="price">${formatPrice(item.price * item.qty)}</span>
+                                        </td>
+                                        <td>
+                                            <button class="remove-btn" data-action="remove" data-key="${item.key}" title="حذف">
+                                                ✕
+                                            </button>
+                                        </td>
+                                    </tr>
+                                `).join("")}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="cart-summary">
+                        <div class="summary-row">
+                            <span>تعداد اقلام</span>
+                            <span>${itemCount.toLocaleString("fa-IR")} قلم</span>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>هزینه ارسال</span>
+                            <span>رایگان</span>
+                        </div>
+
+                        <div class="summary-row total">
+                            <span>مجموع کل</span>
+                            <span class="price">${formatPrice(total)}</span>
+                        </div>
+
+                        <div class="summary-actions">
+                            <a href="checkout.html" class="btn btn-primary">
+                                ادامه و پرداخت
+                            </a>
+
+                            <a href="index.html" class="btn btn-outline">
+                                ادامه خرید
+                            </a>
+
+                            <button class="btn btn-danger" id="clearCartBtn">
+                                خالی کردن سبد
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            `;
+
+            const clearBtn = document.getElementById("clearCartBtn");
+            if (clearBtn) {
+                clearBtn.addEventListener("click", clearCart);
+            }
+        }
+
+        document.addEventListener("click", function (event) {
+            const actionBtn = event.target.closest("[data-action]");
+
+            if (!actionBtn) return;
+
+            const action = actionBtn.dataset.action;
+            const key = actionBtn.dataset.key;
+
+            if (action === "increase") {
+                changeQty(key, 1);
+            } else if (action === "decrease") {
+                changeQty(key, -1);
+            } else if (action === "remove") {
+                removeItem(key);
+            }
+        });
+
+        window.addEventListener("storage", function () {
+            renderCart();
+        });
+
+        renderCart();
+    </script>
+</body>
+</html>

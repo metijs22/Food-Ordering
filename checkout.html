@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فود آردرینگ | پرداخت</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Tahoma, "Segoe UI", Arial, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            line-height: 1.9;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ─── Header ─── */
+        .header {
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #f97316;
+        }
+
+        .nav {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: #f1f5f9;
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #f97316;
+            color: #fff;
+        }
+
+        .cart-badge {
+            background: #f97316;
+            color: #fff;
+            border-radius: 999px;
+            padding: 1px 8px;
+            font-size: 12px;
+            margin-right: 4px;
+        }
+
+        .nav a.active .cart-badge {
+            background: #fff;
+            color: #f97316;
+        }
+
+        /* ─── Layout ─── */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px 16px 60px;
+        }
+
+        .page-title {
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        /* ─── Cards ─── */
+        .card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+            margin-bottom: 18px;
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 14px;
+            color: #334155;
+        }
+
+        /* ─── Grid ─── */
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 18px;
+            align-items: start;
+        }
+
+        /* ─── Form ─── */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            font-size: 14px;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: inherit;
+            background: #fff;
+            color: #0f172a;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #f97316;
+            box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* ─── Payment Options ─── */
+        .payment-options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #fff;
+        }
+
+        .payment-option:hover {
+            border-color: #fdba74;
+            background: #fff7ed;
+        }
+
+        .payment-option.selected {
+            border-color: #f97316;
+            background: #fff7ed;
+        }
+
+        .payment-option input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #f97316;
+        }
+
+        .payment-option .pay-icon {
+            font-size: 24px;
+        }
+
+        .payment-option .pay-label {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .payment-option .pay-desc {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .card-fields {
+            margin-top: 14px;
+            display: none;
+            padding: 16px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card-fields.visible {
+            display: block;
+        }
+
+        /* ─── Buttons ─── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 15px;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #f97316;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #ea580c;
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-outline {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
+        }
+
+        .btn-outline:hover {
+            background: #f8fafc;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        /* ─── Summary ─── */
+        .summary-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 12px;
+            border: 1px solid #f1f5f9;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            background: #fafafa;
+            font-size: 14px;
+        }
+
+        .summary-item:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .summary-item .item-name {
+            font-weight: 700;
+        }
+
+        .summary-item .item-detail {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .summary-item .item-price {
+            font-weight: 800;
+            color: #c2410c;
+            white-space: nowrap;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 14px;
+            margin-top: 12px;
+            border-top: 2px solid #e2e8f0;
+            font-size: 18px;
+            font-weight: 900;
+        }
+
+        .summary-total .amount {
+            color: #c2410c;
+            font-size: 20px;
+        }
+
+        /* ─── Empty State ─── */
+        .empty {
+            text-align: center;
+            padding: 60px 24px;
+            background: #fff;
+            border: 2px dashed #e2e8f0;
+            border-radius: 20px;
+        }
+
+        .empty .icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .empty p {
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+
+        .empty .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ─── Toast ─── */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #0f172a;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+            z-index: 9999;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.error {
+            background: #dc2626;
+        }
+
+        .toast.success {
+            background: #16a34a;
+        }
+
+        /* ─── Footer ─── */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #e2e8f0;
+            background: #fff;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 800px) {
+            .checkout-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .empty .actions {
+                flex-direction: column;
+            }
+
+            .empty .actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">🍽️ فود آردرینگ</a>
+            <nav class="nav">
+                <a href="index.html">رستوران‌ها</a>
+                <a href="cart.html">سبد خرید <span class="cart-badge" id="cartBadge"></span></a>
+                <a href="tracking.html">ردیابی سفارش</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <main class="container" id="app"></main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        سیستم نمونه سفارش غذا | HTML + CSS + JS
+    </footer>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ─────────────────────────────────────────────
+        // Constants
+        // ─────────────────────────────────────────────
+        const CART_KEY = "foodCart";
+        const ORDERS_KEY = "foodOrders";
+
+        // ─────────────────────────────────────────────
+        // Helpers
+        // ─────────────────────────────────────────────
+        function formatPrice(value) {
+            return new Intl.NumberFormat("fa-IR").format(Number(value || 0)) + " تومان";
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement("div");
+            div.textContent = str || "";
+            return div.innerHTML;
+        }
+
+        function getCart() {
+            try {
+                return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+            } catch {
+                return [];
+            }
+        }
+
+        function getOrders() {
+            try {
+                return JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+            } catch {
+                return [];
+            }
+        }
+
+        function saveOrders(orders) {
+            localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+        }
+
+        function getCartCount() {
+            return getCart().reduce((sum, item) => sum + Number(item.qty || 0), 0);
+        }
+
+        function getCartTotal() {
+            return getCart().reduce(
+                (sum, item) => sum + Number(item.price || 0) * Number(item.qty || 0),
+                0
+            );
+        }
+
+        function updateCartBadge() {
+            const badge = document.getElementById("cartBadge");
+            const count = getCartCount();
+            badge.textContent = count > 0 ? count.toLocaleString("fa-IR") : "";
+            badge.style.display = count > 0 ? "inline-block" : "none";
+        }
+
+        function showToast(message, type = "") {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.className = "toast show " + type;
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => {
+                toast.className = "toast";
+            }, 2500);
+        }
+
+        function generateOrderId() {
+            const ts = Date.now().toString(36).toUpperCase();
+            const rand = Math.random().toString(36).substring(2, 5).toUpperCase();
+            return "ORD-" + ts + rand;
+        }
+
+        // ─────────────────────────────────────────────
+        // Render: Empty Cart
+        // ─────────────────────────────────────────────
+        function renderEmpty() {
+            document.getElementById("app").innerHTML = `
+                <div class="empty">
+                    <div class="icon">💳</div>
+                    <h2>سبد خرید خالی است</h2>
+                    <p>برای پرداخت، ابتدا باید اقلامی را به سبد خرید اضافه کنید.</p>
+                    <div class="actions">
+                        <a href="index.html" class="btn btn-primary">مشاهده رستوران‌ها</a>
+                        <a href="cart.html" class="btn btn-outline">سبد خرید</a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // ─────────────────────────────────────────────
+        // Render: Checkout Page
+        // ─────────────────────────────────────────────
+        function renderCheckout() {
+            const cart = getCart();
+            const total = getCartTotal();
+            const itemCount = getCartCount();
+
+            document.getElementById("app").innerHTML = `
+                <h1 class="page-title">تکمیل سفارش و پرداخت</h1>
+
+                <div class="checkout-grid">
+                    <!-- Form -->
+                    <div class="card">
+                        <h2>📋 اطلاعات مشتری</h2>
+
+                        <form id="checkoutForm" novalidate>
+                            <div class="form-group">
+                                <label for="fullName">نام و نام خانوادگی *</label>
+                                <input type="text" id="fullName" name="fullName"
+                                       placeholder="مثلاً: علی رضایی" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">شماره موبایل *</label>
+                                <input type="tel" id="phone" name="phone"
+                                       placeholder="09123456789"
+                                       inputmode="numeric" maxlength="11" required>
+                                <div class="form-hint">شماره باید ۱۱ رقم و با 09 شروع شود</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="address">آدرس کامل *</label>
+                                <textarea id="address" name="address"
+                                          placeholder="استان، شهر، خیابان، پلاک، واحد" required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>روش پرداخت *</label>
+                                <div class="payment-options">
+                                    <label class="payment-option selected" id="optCard">
+                                        <input type="radio" name="payment" value="card" checked>
+                                        <span class="pay-icon">💳</span>
+                                        <div>
+                                            <div class="pay-label">پرداخت با کارت</div>
+                                            <div class="pay-desc">پرداخت آنلاین با کارت بانکی</div>
+                                        </div>
+                                    </label>
+
+                                    <label class="payment-option" id="optCash">
+                                        <input type="radio" name="payment" value="cash">
+                                        <span class="pay-icon">💵</span>
+                                        <div>
+                                            <div class="pay-label">پرداخت در محل</div>
+                                            <div class="pay-desc">پرداخت نقدی هنگام تحویل</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Card Fields (shown when card selected) -->
+                            <div class="card-fields visible" id="cardFields">
+                                <div class="form-group">
+                                    <label for="cardNumber">شماره کارت *</label>
+                                    <input type="text" id="cardNumber" name="cardNumber"
+                                           placeholder="6037 9912 3456 7890"
+                                           inputmode="numeric" maxlength="19">
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="cvv">CVV2 *</label>
+                                        <input type="text" id="cvv" name="cvv"
+                                               placeholder="123"
+                                               inputmode="numeric" maxlength="4">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="expiry">تاریخ انقضا *</label>
+                                        <input type="text" id="expiry" name="expiry"
+                                               placeholder="12/29"
+                                               inputmode="numeric" maxlength="5">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 20px;">
+                                <button type="submit" class="btn btn-primary btn-block" id="submitBtn">
+                                    ✅ ثبت سفارش
+                                </button>
+                            </div>
+
+                            <p class="form-hint" style="margin-top: 10px; text-align: center;">
+                                با ثبت سفارش، اطلاعات شما در مرورگر ذخیره می‌شود.
+                            </p>
+                        </form>
+                    </div>
+
+                    <!-- Summary -->
+                    <div class="card">
+                        <h2>🛒 خلاصه سفارش</h2>
+
+                        <div style="margin-bottom: 14px;">
+                            ${cart.map(item => `
+                                <div class="summary-item">
+                                    <div>
+                                        <div class="item-name">${item.emoji || "🍽️"} ${escapeHtml(item.name)}</div>
+                                        <div class="item-detail">${escapeHtml(item.restaurantName || "")} | ${Number(item.qty).toLocaleString("fa-IR")} عدد</div>
+                                    </div>
+                                    <div class="item-price">${formatPrice(item.price * item.qty)}</div>
+                                </div>
+                            `).join("")}
+                        </div>
+
+                        <div class="summary-item" style="background: #f0fdf4; border-color: #bbf7d0;">
+                            <div class="item-name">🚚 هزینه ارسال</div>
+                            <div class="item-price" style="color: #16a34a;">رایگان</div>
+                        </div>
+
+                        <div class="summary-total">
+                            <span>مبلغ قابل پرداخت</span>
+                            <span class="amount">${formatPrice(total)}</span>
+                        </div>
+
+                        <div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <a href="cart.html" class="btn btn-outline" style="flex:1;">← بازگشت به سبد</a>
+                            <a href="index.html" class="btn btn-outline" style="flex:1;">🏠 خانه</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            bindEvents();
+        }
+
+        // ─────────────────────────────────────────────
+        // Event Binding
+        // ─────────────────────────────────────────────
+        function bindEvents() {
+            const form = document.getElementById("checkoutForm");
+            const optCard = document.getElementById("optCard");
+            const optCash = document.getElementById("optCash");
+            const cardFields = document.getElementById("cardFields");
+            const cardNumberInput = document.getElementById("cardNumber");
+            const cvvInput = document.getElementById("cvv");
+            const expiryInput = document.getElementById("expiry");
+
+            // Payment toggle
+            optCard.addEventListener("click", () => {
+                optCard.classList.add("selected");
+                optCash.classList.remove("selected");
+                cardFields.classList.add("visible");
+            });
+
+            optCash.addEventListener("click", () => {
+                optCash.classList.add("selected");
+                optCard.classList.remove("selected");
+                cardFields.classList.remove("visible");
+            });
+
+            // Card number formatting
+            cardNumberInput.addEventListener("input", function () {
+                let digits = this.value.replace(/\D/g, "").slice(0, 16);
+                this.value = digits.replace(/(\d{4})(?=\d)/g, "$1 ");
+            });
+
+            // CVV
+            cvvInput.addEventListener("input", function () {
+                this.value = this.value.replace(/\D/g, "").slice(0, 4);
+            });
+
+            // Expiry auto-slash
+            expiryInput.addEventListener("input", function () {
+                let digits = this.value.replace(/\D/g, "").slice(0, 4);
+                if (digits.length > 2) {
+                    this.value = digits.slice(0, 2) + "/" + digits.slice(2);
+                } else {
+                    this.value = digits;
+                }
+            });
+
+            // Submit
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                const name = form.fullName.value.trim();
+                const phone = form.phone.value.trim().replace(/\D/g, "");
+                const address = form.address.value.trim();
+                const payment = form.querySelector('input[name="payment"]:checked').value;
+
+                // Validation
+                if (!name || name.length < 3) {
+                    showToast("نام و نام خانوادگی را کامل وارد کنید.", "error");
+                    form.fullName.focus();
+                    return;
+                }
+
+                if (!/^09\d{9}$/.test(phone)) {
+                    showToast("شماره موبایل معتبر نیست. (09 + ۹ رقم)", "error");
+                    form.phone.focus();
+                    return;
+                }
+
+                if (!address || address.length < 5) {
+                    showToast("آدرس کامل را وارد کنید.", "error");
+                    form.address.focus();
+                    return;
+                }
+
+                let cardLast4 = "";
+
+                if (payment === "card") {
+                    const cardNum = cardNumberInput.value.replace(/\D/g, "");
+                    const cvv = cvvInput.value.replace(/\D/g, "");
+                    const expiry = expiryInput.value.replace(/\D/g, "");
+
+                    if (cardNum.length !== 16) {
+                        showToast("شماره کارت باید ۱۶ رقم باشد.", "error");
+                        cardNumberInput.focus();
+                        return;
+                    }
+
+                    if (cvv.length < 3) {
+                        showToast("CVV2 را به‌درستی وارد کنید.", "error");
+                        cvvInput.focus();
+                        return;
+                    }
+
+                    if (!/^\d{2}\/\d{2}$/.test(expiryInput.value)) {
+                        showToast("تاریخ انقضا را به‌صورت MM/YY وارد کنید.", "error");
+                        expiryInput.focus();
+                        return;
+                    }
+
+                    cardLast4 = cardNum.slice(-4);
+                }
+
+                // Create order
+                const cart = getCart();
+                const total = getCartTotal();
+
+                const order = {
+                    id: generateOrderId(),
+                    createdAt: Date.now(),
+                    status: "در حال آماده‌سازی",
+                    items: cart,
+                    total: total,
+                    customer: {
+                        name: name,
+                        phone: phone,
+                        address: address,
+                        payment: payment,
+                        cardLast4: cardLast4
+                    }
+                };
+
+                // Save
+                const orders = getOrders();
+                orders.unshift(order);
+                saveOrders(orders);
+
+                // Clear cart
+                localStorage.removeItem(CART_KEY);
+
+                // UI feedback
+                const submitBtn = document.getElementById("submitBtn");
+                submitBtn.disabled = true;
+                submitBtn.textContent = "⏳ در حال ثبت...";
+
+                showToast("✅ سفارش شما با موفقیت ثبت شد!", "success");
+
+                // Redirect
+                setTimeout(() => {
+                    window.location.href = "tracking.html?order=" + encodeURIComponent(order.id);
+                }, 1500);
+            });
+        }
+
+        // ─────────────────────────────────────────────
+        // Init
+        // ─────────────────────────────────────────────
+        function init() {
+            updateCartBadge();
+
+            const cart = getCart();
+
+            if (cart.length === 0) {
+                renderEmpty();
+            } else {
+                renderCheckout();
+            }
+        }
+
+        // Re-render if cart changes from another tab
+        window.addEventListener("storage", init);
+
+        init();
+    </script>
+</body>
+</html>
