@@ -347,9 +347,9 @@
     </footer>
 
     <script>
-        // ─────────────────────────────────────────────
+     
         // Data
-        // ─────────────────────────────────────────────
+    
         const restaurants = [
             {
                 id: 1,
@@ -389,9 +389,8 @@
             }
         ];
 
-        // ─────────────────────────────────────────────
         // Helpers
-        // ─────────────────────────────────────────────
+       
         function formatPrice(value) {
             return new Intl.NumberFormat("fa-IR").format(value) + " تومان";
         }
@@ -412,9 +411,8 @@
             badge.style.display = count > 0 ? "inline-block" : "none";
         }
 
-        // ─────────────────────────────────────────────
         // Render
-        // ─────────────────────────────────────────────
+
         function renderRestaurants(query = "") {
             const grid = document.getElementById("restaurantGrid");
             const q = query.trim();
@@ -457,16 +455,16 @@
             `).join("");
         }
 
-        // ─────────────────────────────────────────────
+       
         // Events
-        // ─────────────────────────────────────────────
+
         document.getElementById("searchInput").addEventListener("input", function (e) {
             renderRestaurants(e.target.value);
         });
 
-        // ─────────────────────────────────────────────
+     
         // Init
-        // ─────────────────────────────────────────────
+      
         renderRestaurants();
         updateCartBadge();
     </script>
