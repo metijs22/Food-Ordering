@@ -445,15 +445,15 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // ─────────────────────────────────────────────
+  
         // Constants
-        // ─────────────────────────────────────────────
+      
         const CART_KEY = "foodCart";
         const ORDERS_KEY = "foodOrders";
 
-        // ─────────────────────────────────────────────
+      
         // Helpers
-        // ─────────────────────────────────────────────
+   
         function formatPrice(value) {
             return new Intl.NumberFormat("fa-IR").format(Number(value || 0)) + " تومان";
         }
@@ -518,9 +518,8 @@
             return "ORD-" + ts + rand;
         }
 
-        // ─────────────────────────────────────────────
         // Render: Empty Cart
-        // ─────────────────────────────────────────────
+       
         function renderEmpty() {
             document.getElementById("app").innerHTML = `
                 <div class="empty">
@@ -535,9 +534,9 @@
             `;
         }
 
-        // ─────────────────────────────────────────────
+
         // Render: Checkout Page
-        // ─────────────────────────────────────────────
+     
         function renderCheckout() {
             const cart = getCart();
             const total = getCartTotal();
@@ -668,10 +667,8 @@
 
             bindEvents();
         }
-
-        // ─────────────────────────────────────────────
         // Event Binding
-        // ─────────────────────────────────────────────
+     
         function bindEvents() {
             const form = document.getElementById("checkoutForm");
             const optCard = document.getElementById("optCard");
@@ -812,9 +809,9 @@
             });
         }
 
-        // ─────────────────────────────────────────────
+  
         // Init
-        // ─────────────────────────────────────────────
+        
         function init() {
             updateCartBadge();
 
