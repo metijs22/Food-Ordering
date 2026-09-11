@@ -411,9 +411,9 @@
     </footer>
 
     <script>
-        // ─────────────────────────────────────────────
+    
         // Seed: اگر سبد خالی بود، آیتم‌های نمونه بذار
-        // ─────────────────────────────────────────────
+      
         function seedCart() {
             const existing = localStorage.getItem("foodCart");
 
@@ -462,9 +462,9 @@
             }
         }
 
-        // ─────────────────────────────────────────────
+ 
         // Helpers
-        // ─────────────────────────────────────────────
+    
         function formatPrice(value) {
             return new Intl.NumberFormat("fa-IR").format(value) + " تومان";
         }
@@ -523,9 +523,8 @@
             }, 2000);
         }
 
-        // ─────────────────────────────────────────────
         // Actions
-        // ─────────────────────────────────────────────
+      
         function changeQty(key, delta) {
             const cart = getCart();
             const item = cart.find((i) => i.key === key);
@@ -562,9 +561,9 @@
             showToast("سبد خرید خالی شد");
         }
 
-        // ─────────────────────────────────────────────
+       
         // Render
-        // ─────────────────────────────────────────────
+
         function renderEmptyCart() {
             const content = document.getElementById("content");
 
@@ -692,9 +691,9 @@
             }
         }
 
-        // ─────────────────────────────────────────────
+    
         // Events
-        // ─────────────────────────────────────────────
+      
         document.addEventListener("click", function (event) {
             const actionBtn = event.target.closest("[data-action]");
 
@@ -716,9 +715,9 @@
             renderCart();
         });
 
-        // ─────────────────────────────────────────────
+      
         // Init
-        // ─────────────────────────────────────────────
+   
         seedCart();
         renderCart();
     </script>
