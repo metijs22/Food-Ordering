@@ -498,9 +498,9 @@
     </footer>
 
     <script>
-        // ─────────────────────────────────────────────
+       
         // Constants & Helpers
-        // ─────────────────────────────────────────────
+       
         const ORDERS_KEY = "foodOrders";
         const CART_KEY = "foodCart";
 
@@ -548,9 +548,8 @@
             badge.style.display = count > 0 ? "inline-block" : "none";
         }
 
-        // ─────────────────────────────────────────────
         // Status Logic
-        // ─────────────────────────────────────────────
+      
         const STEPS = [
             { icon: "🧾", label: "ثبت سفارش", desc: "سفارش شما با موفقیت ثبت شد" },
             { icon: "👨‍🍳", label: "در حال آماده‌سازی", desc: "رستوران در حال پخت غذاست" },
@@ -569,9 +568,8 @@
             return 3;
         }
 
-        // ─────────────────────────────────────────────
         // Render Functions
-        // ─────────────────────────────────────────────
+       
         function renderEmpty() {
             document.getElementById("app").innerHTML = `
                 <div class="empty">
@@ -740,9 +738,9 @@
             `;
         }
 
-        // ─────────────────────────────────────────────
+     
         // Init
-        // ─────────────────────────────────────────────
+        
         function init() {
             updateCartBadge();
 
