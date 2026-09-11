@@ -411,6 +411,60 @@
     </footer>
 
     <script>
+        // ─────────────────────────────────────────────
+        // Seed: اگر سبد خالی بود، آیتم‌های نمونه بذار
+        // ─────────────────────────────────────────────
+        function seedCart() {
+            const existing = localStorage.getItem("foodCart");
+
+            // اگه سبد خالی یا وجود نداره، آیتم‌های نمونه بذار
+            if (!existing || existing === "[]") {
+                const sampleCart = [
+                    {
+                        key: "1-r1-1",
+                        restaurantId: 1,
+                        restaurantName: "رستوران زعفران",
+                        name: "برگر ویژه",
+                        price: 185000,
+                        qty: 2,
+                        emoji: "🍔"
+                    },
+                    {
+                        key: "1-r1-3",
+                        restaurantId: 1,
+                        restaurantName: "رستوران زعفران",
+                        name: "سیب‌زمینی سرخ‌شده",
+                        price: 85000,
+                        qty: 1,
+                        emoji: "🍟"
+                    },
+                    {
+                        key: "2-r2-1",
+                        restaurantId: 2,
+                        restaurantName: "کافه و رستوران آفتاب",
+                        name: "چلوکباب",
+                        price: 350000,
+                        qty: 1,
+                        emoji: "🍢"
+                    },
+                    {
+                        key: "3-r3-4",
+                        restaurantId: 3,
+                        restaurantName: "پیتزرای رومی",
+                        name: "نوشابه",
+                        price: 45000,
+                        qty: 2,
+                        emoji: "🥤"
+                    }
+                ];
+
+                localStorage.setItem("foodCart", JSON.stringify(sampleCart));
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        // Helpers
+        // ─────────────────────────────────────────────
         function formatPrice(value) {
             return new Intl.NumberFormat("fa-IR").format(value) + " تومان";
         }
@@ -469,6 +523,9 @@
             }, 2000);
         }
 
+        // ─────────────────────────────────────────────
+        // Actions
+        // ─────────────────────────────────────────────
         function changeQty(key, delta) {
             const cart = getCart();
             const item = cart.find((i) => i.key === key);
@@ -505,6 +562,9 @@
             showToast("سبد خرید خالی شد");
         }
 
+        // ─────────────────────────────────────────────
+        // Render
+        // ─────────────────────────────────────────────
         function renderEmptyCart() {
             const content = document.getElementById("content");
 
@@ -632,6 +692,9 @@
             }
         }
 
+        // ─────────────────────────────────────────────
+        // Events
+        // ─────────────────────────────────────────────
         document.addEventListener("click", function (event) {
             const actionBtn = event.target.closest("[data-action]");
 
@@ -653,6 +716,10 @@
             renderCart();
         });
 
+        // ─────────────────────────────────────────────
+        // Init
+        // ─────────────────────────────────────────────
+        seedCart();
         renderCart();
     </script>
 </body>
